@@ -1,204 +1,189 @@
 /* eslint-disable react/no-unescaped-entities */
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
-import { AiOutlineClose, AiOutlineMail, AiOutlineMenu } from 'react-icons/ai';
-import { FaGithub, FaLinkedinIn } from 'react-icons/fa';
-import { BsFillPersonLinesFill } from 'react-icons/bs';
-import { useRouter } from 'next/router';
-import logoImg from '../public/assets/big_logo/fav.png';
+import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const navLinks = [
+	{ name: 'Home', href: '/' },
+	{ name: 'About', href: '/#about' },
+	{ name: 'Skills', href: '/#skills' },
+	{ name: 'Projects', href: '/#projects' },
+	{ name: 'Contact', href: '/#contact' }
+];
 
 const Navbar = () => {
 	const [nav, setNav] = useState(false);
-	const [shadow, setShadow] = useState(false);
-	const [navBg, setNavBg] = useState('#ecf0f3');
-	const [linkColor, setLinkColor] = useState('#1f2937');
-
-	const router = useRouter();
+	const [scrolled, setScrolled] = useState(false);
 
 	useEffect(() => {
-		if (
-			router.asPath === '/todo' ||
-			router.asPath === '/weather' ||
-			router.asPath === '/squidGame' ||
-			router.asPath === '/covid' ||
-			router.asPath === '/adviceGenerator' ||
-			router.asPath === '/expenseTracker'
-		) {
-			setNavBg('transparent');
-			setLinkColor('#ecf0f3 ');
-		} else {
-			setNavBg('#ecf0f3');
-			setLinkColor('#1f2937');
-		}
-	}, [router]);
+		const handleScroll = () => {
+			setScrolled(window.scrollY > 50);
+		};
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
 
 	const handleNav = () => {
 		setNav(!nav);
 	};
 
-	useEffect(() => {
-		const handleShadow = () => {
-			if (window.scrollY >= 90) {
-				setShadow(true);
-			} else {
-				setShadow(false);
-			}
-		};
-		window.addEventListener('scroll', handleShadow);
-	}, []);
-
 	return (
-		<div
-			style={{ backgroundColor: `${navBg}` }}
-			className={
-				shadow
-					? 'fixed w-full h-20 shadow-xl z-[100]'
-					: 'fixed w-full h-20 z-[100]'
-			}
-		>
-			<div className="flex justify-between items-center w-full h-full px-2 2xl:px-16 py-12">
-				<Link href="/">
-					<Image
-						src={logoImg}
-						alt="portfolio logo"
-						width="150"
-						height="145"
-						className=" contrast-150"
-					/>
-				</Link>
-
-				<div>
-					<ul style={{ color: `${linkColor}` }} className="hidden md:flex">
-						<Link href="/">
-							<li className="ml-10 text-sm uppercase font-bold hover:border-b">
-								Home
-							</li>
-						</Link>
-						<Link href="/#about">
-							<li className="ml-10 text-sm uppercase font-bold hover:border-b">
-								About
-							</li>
-						</Link>
-						<Link href="/#skills">
-							<li className="ml-10 text-sm uppercase font-bold hover:border-b">
-								Skills
-							</li>
-						</Link>
-						<Link href="/#projects">
-							<li className="ml-10 text-sm uppercase font-bold hover:border-b">
-								Projects
-							</li>
-						</Link>
-						<Link href="/#contact">
-							<li className="ml-10 text-sm uppercase font-bold hover:border-b">
-								Contact
-							</li>
-						</Link>
-					</ul>
-					<div onClick={handleNav} className="md:hidden">
-						<AiOutlineMenu size={25} />
-					</div>
-				</div>
-			</div>
-			<div
-				className={
-					nav
-						? ' md:hidden fixed left-0 top-0 w-full h-screen bg-black/70'
-						: ' '
-				}
+		<>
+			{/* Desktop Navbar */}
+			<motion.nav
+				initial={{ y: -100, opacity: 0 }}
+				animate={{ y: 0, opacity: 1 }}
+				transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+				className={`fixed w-full z-[100] transition-all duration-500 ${
+					scrolled
+						? 'py-3'
+						: 'py-5'
+				}`}
 			>
-				<div
-					className={
-						nav
-							? ' fixed left-0 top-0 w-[75%] sm:w-[60 %] md:[45%] h-screen bg-[#ecf0f3] p-10 ease-in duration-500'
-							: 'fixed left-[-100%] top-0 p-10 ease-in duration-500'
-					}
-				>
-					<div>
-						<div className="flex w-full items-center justify-between">
-							<Link href="/">
-								<Image src={logoImg} width="137" height="137" alt="/" />
-							</Link>
-							<div
-								onClick={handleNav}
-								className="rounded-full shadow-lg shadow-gray-400 p-3 cursor-pointer"
+				<div className={`max-w-[1200px] mx-auto px-6 ${
+					scrolled
+						? 'glass-card !rounded-full px-8 py-2'
+						: ''
+				}`}>
+					<div className="flex justify-between items-center h-14">
+						{/* Logo */}
+						<Link href="/">
+							<motion.div
+								className="flex items-center gap-2 cursor-pointer group"
+								whileHover={{ scale: 1.02 }}
+								whileTap={{ scale: 0.98 }}
 							>
-								<AiOutlineClose />
+								<div className="w-9 h-9 rounded-lg bg-gradient-to-br from-accent-cyan to-accent-violet flex items-center justify-center">
+									<span className="text-white font-bold text-sm">S</span>
+								</div>
+								<span className="font-semibold text-[var(--text-primary)] text-lg hidden sm:block">
+									sankalp
+									<span className="text-[var(--accent-cyan)]">.</span>
+								</span>
+							</motion.div>
+						</Link>
+
+						{/* Desktop Nav Links */}
+						<div className="hidden md:flex items-center gap-1">
+							{navLinks.map((link, i) => (
+								<Link key={i} href={link.href}>
+									<motion.span
+										className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300 cursor-pointer rounded-lg hover:bg-[rgba(255,255,255,0.05)]"
+										whileHover={{ y: -1 }}
+										transition={{ duration: 0.2 }}
+									>
+										{link.name}
+									</motion.span>
+								</Link>
+							))}
+						</div>
+
+						{/* Status Badge + CTA */}
+						<div className="hidden md:flex items-center gap-4">
+							<div className="flex items-center gap-2 text-xs text-[var(--text-muted)] font-mono">
+								<span className="status-dot"></span>
+								Available for work
 							</div>
+							<Link href="/#contact">
+								<span className="btn-glow !py-2 !px-5 !text-xs cursor-pointer">
+									Let&apos;s Talk
+								</span>
+							</Link>
 						</div>
-						<div className="border-b flex justify-center items-center border-gray-300 my-1">
-							<p>Vision | Create | Execute </p>
-						</div>
-					</div>
-					<div className="py-4 flex flex-col ">
-						<div className="flex justify-center items-center">
-							<ul className="uppercase ">
-								<Link href="/">
-									<li
-										onClick={() => setNav(false)}
-										className="py-4 font-bold text-sm"
-									>
-										Home
-									</li>
-								</Link>
-								<Link href="/#about">
-									<li
-										onClick={() => setNav(false)}
-										className="py-4 font-bold text-sm"
-									>
-										About
-									</li>
-								</Link>
-								<Link href="/#skills">
-									<li
-										onClick={() => setNav(false)}
-										className="py-4 font-bold text-sm"
-									>
-										Skills
-									</li>
-								</Link>
-								<Link href="/#projects">
-									<li
-										onClick={() => setNav(false)}
-										className="py-4 font-bold text-sm"
-									>
-										Projects
-									</li>
-								</Link>
-								<Link href="/#contact">
-									<li
-										onClick={() => setNav(false)}
-										className="py-4 font-bold text-sm"
-									>
-										Contact
-									</li>
-								</Link>
-							</ul>
-						</div>
-						<div className="pt-40">
-							<p className="uppercase font-bold tracking-widest text-[#5651e5]">
-								Let's Connect
-							</p>
-							<div className="flex items-center justify-between my-4 w-full sm:w-[80%]  ">
-								<div className="rounded-full shadow-lg shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300">
-									<FaLinkedinIn />
-								</div>
-								<div className="rounded-full shadow-lg shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300">
-									<FaGithub />
-								</div>
-								<div className="rounded-full shadow-lg shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300">
-									<AiOutlineMail />
-								</div>
-								<div className="rounded-full shadow-lg shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300">
-									<BsFillPersonLinesFill />
-								</div>
-							</div>
-						</div>
+
+						{/* Mobile Menu Button */}
+						<motion.div
+							onClick={handleNav}
+							className="md:hidden p-2 rounded-lg glass-card cursor-pointer"
+							whileTap={{ scale: 0.9 }}
+						>
+							<AiOutlineMenu size={20} className="text-[var(--text-primary)]" />
+						</motion.div>
 					</div>
 				</div>
-			</div>
-		</div>
+			</motion.nav>
+
+			{/* Mobile Fullscreen Menu */}
+			<AnimatePresence>
+				{nav && (
+					<>
+						{/* Backdrop */}
+						<motion.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 0.3 }}
+							className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200]"
+							onClick={handleNav}
+						/>
+
+						{/* Menu Panel */}
+						<motion.div
+							initial={{ x: '100%' }}
+							animate={{ x: 0 }}
+							exit={{ x: '100%' }}
+							transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+							className="fixed right-0 top-0 w-[85%] sm:w-[60%] h-screen z-[300] p-8"
+							style={{ background: 'var(--bg-secondary)' }}
+						>
+							{/* Close Button */}
+							<div className="flex justify-end mb-12">
+								<motion.div
+									onClick={handleNav}
+									className="p-3 rounded-full glass-card cursor-pointer"
+									whileTap={{ scale: 0.9 }}
+								>
+									<AiOutlineClose size={18} className="text-[var(--text-primary)]" />
+								</motion.div>
+							</div>
+
+							{/* Mobile Nav Links */}
+							<div className="flex flex-col gap-2">
+								{navLinks.map((link, i) => (
+									<motion.div
+										key={i}
+										initial={{ x: 50, opacity: 0 }}
+										animate={{ x: 0, opacity: 1 }}
+										transition={{ delay: 0.1 + i * 0.05, duration: 0.4 }}
+									>
+										<Link href={link.href}>
+											<span
+												onClick={handleNav}
+												className="block py-4 px-4 text-2xl font-semibold text-[var(--text-primary)] hover:text-[var(--accent-cyan)] transition-colors duration-300 cursor-pointer rounded-xl hover:bg-[rgba(255,255,255,0.03)]"
+											>
+												{link.name}
+											</span>
+										</Link>
+									</motion.div>
+								))}
+							</div>
+
+							{/* Mobile Status */}
+							<motion.div
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ delay: 0.5, duration: 0.4 }}
+								className="mt-12 pt-8 border-t border-[var(--border-glass)]"
+							>
+								<div className="flex items-center gap-2 text-sm text-[var(--text-muted)] font-mono mb-4">
+									<span className="status-dot"></span>
+									Available for work
+								</div>
+								<Link href="/#contact">
+									<span
+										onClick={handleNav}
+										className="btn-glow w-full cursor-pointer block text-center"
+									>
+										Let&apos;s Talk
+									</span>
+								</Link>
+							</motion.div>
+						</motion.div>
+					</>
+				)}
+			</AnimatePresence>
+		</>
 	);
 };
 
