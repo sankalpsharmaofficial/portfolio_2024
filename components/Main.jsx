@@ -148,31 +148,6 @@ const Main = () => {
 				</motion.div>
 			</motion.div>
 
-			{/* Decorative Side Element */}
-			<motion.div
-				className="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2"
-				initial={{ opacity: 0, x: 50 }}
-				animate={{ opacity: 1, x: 0 }}
-				transition={{ delay: 1, duration: 1 }}
-			>
-				<div className="flex flex-col items-center gap-6">
-					<div className="w-[1px] h-20 bg-gradient-to-b from-transparent via-[var(--accent-cyan)] to-transparent opacity-30"></div>
-					<div className="flex flex-col gap-3">
-						{['React', 'Node.js', 'AI'].map((tech, i) => (
-							<motion.span
-								key={i}
-								className="text-xs font-mono text-[var(--text-muted)] -rotate-90 origin-center whitespace-nowrap"
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 0.4 }}
-								transition={{ delay: 1.2 + i * 0.2, duration: 0.6 }}
-							>
-								{tech}
-							</motion.span>
-						))}
-					</div>
-					<div className="w-[1px] h-20 bg-gradient-to-b from-transparent via-[var(--accent-violet)] to-transparent opacity-30"></div>
-				</div>
-			</motion.div>
 		</section>
 	);
 };

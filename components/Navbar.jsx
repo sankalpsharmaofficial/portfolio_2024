@@ -54,12 +54,12 @@ const Navbar = () => {
 								whileHover={{ scale: 1.02 }}
 								whileTap={{ scale: 0.98 }}
 							>
-								<div className="w-9 h-9 rounded-lg bg-gradient-to-br from-accent-cyan to-accent-violet flex items-center justify-center">
+								<div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#FFE946] to-[#FE7501] flex items-center justify-center">
 									<span className="text-white font-bold text-sm">S</span>
 								</div>
 								<span className="font-semibold text-[var(--text-primary)] text-lg hidden sm:block">
 									sankalp
-									<span className="text-[var(--accent-cyan)]">.</span>
+									<span className="text-[#FFE946]">.</span>
 								</span>
 							</motion.div>
 						</Link>
