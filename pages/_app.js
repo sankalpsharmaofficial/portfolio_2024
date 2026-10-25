@@ -1,18 +1,21 @@
 import Navbar from '../components/Navbar';
 import '../styles/globals.css';
-import { AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/router';
+import { Archivo } from 'next/font/google';
+
+// Variable on width as well as weight: headings use it fully expanded
+const sans = Archivo({
+	subsets: ['latin'],
+	axes: ['wdth'],
+	variable: '--font-sans',
+	display: 'swap'
+});
 
 function MyApp({ Component, pageProps }) {
-	const router = useRouter();
-
 	return (
-		<>
+		<div className={`${sans.variable} font-sans`}>
 			<Navbar />
-			<AnimatePresence mode="wait">
-				<Component key={router.pathname} {...pageProps} />
-			</AnimatePresence>
-		</>
+			<Component {...pageProps} />
+		</div>
 	);
 }
 
