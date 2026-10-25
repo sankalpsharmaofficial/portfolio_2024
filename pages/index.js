@@ -1,15 +1,13 @@
 import Head from 'next/head';
-import About from '../components/About';
-import Contact from '../components/Contact';
-import Experience from '../components/Experience';
-import Footer from '../components/Footer';
-import Main from '../components/Main';
-import Projects from '../components/Projects';
-import Skills from '../components/Skills';
+import dynamic from 'next/dynamic';
+import Overlay from '../components/Overlay';
+
+// The 3D world only renders in the browser
+const World = dynamic(() => import('../components/world/World'), { ssr: false });
 
 export default function Home() {
 	return (
-		<div>
+		<>
 			<Head>
 				<title>Sankalp Sharma — Full Stack Developer & AI Prompt Engineer</title>
 				<meta
@@ -42,16 +40,16 @@ export default function Home() {
 					href="/favicon-16x16.png"
 				/>
 				<link rel="manifest" href="/site.webmanifest" />
-				<meta name="theme-color" content="#0a0a0f" />
+				<meta name="theme-color" content="#8fd3ff" />
 			</Head>
 
-			<Main />
-			<About />
-			<Skills />
-			<Experience />
-			<Projects />
-			<Contact />
-			<Footer />
-		</div>
+			<div className="fixed inset-0 z-0" aria-hidden="true">
+				<World />
+			</div>
+			{/* Clicks fall through to the 3D world except on the overlay cards */}
+			<main className="pointer-events-none">
+				<Overlay />
+			</main>
+		</>
 	);
 }
